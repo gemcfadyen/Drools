@@ -1,0 +1,48 @@
+<object-stream>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Hello World [1]</activationId>
+  <rule>Hello World</rule>
+  <declarations>message=Hello World(1); m=gemcfadyen.drools_experimentation.Message@39320a41(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>1</type>
+  <factId>1</factId>
+  <objectToString>gemcfadyen.drools_experimentation.Message@39320a41</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Hello World [1]</activationId>
+  <rule>Hello World</rule>
+  <declarations>message=Hello World(1); m=gemcfadyen.drools_experimentation.Message@39320a41(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Goodbye [1]</activationId>
+  <rule>Goodbye</rule>
+  <declarations>message=Goodbye(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>2</type>
+  <factId>1</factId>
+  <objectToString>gemcfadyen.drools_experimentation.Message@39320a41</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Hello World [1]</activationId>
+  <rule>Hello World</rule>
+  <declarations>message=Goodbye(1); m=gemcfadyen.drools_experimentation.Message@39320a41(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Goodbye [1]</activationId>
+  <rule>Goodbye</rule>
+  <declarations>message=Goodbye(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Goodbye [1]</activationId>
+  <rule>Goodbye</rule>
+  <declarations>message=Goodbye(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+</object-stream>
