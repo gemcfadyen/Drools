@@ -13,7 +13,7 @@ public class DrivingLicenseTest {
 
 	@Before
 	public void setupDroolsStatelessSession() {
-		statelessKnowledgeSession = DroolsWorkingMemoryHelper.getStatelessWorkingMemoryUsingDroolsFile("drivinglicence.drl");
+		statelessKnowledgeSession = DroolsWorkingMemoryHelper.getStatelessWorkingMemoryUsingDroolsFile("drivinglicense.drl", this.getClass());
 	}
 
 	@Test
@@ -26,7 +26,10 @@ public class DrivingLicenseTest {
 
 	@Test
 	public void shouldReturnNotEligibleWhenApplicantIsUnder18() {
+		Applicant child = new Applicant("Vera", 15);
+		statelessKnowledgeSession.execute(child);
 
+		assertThat(child.isEligible(), is(false));
 	}
 
 }

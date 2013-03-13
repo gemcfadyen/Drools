@@ -22,7 +22,7 @@ public class Applicant {
 		return isEligible;
 	}
 
-	public void setEligible(boolean isEligible) {
+	public void setIsEligible(boolean isEligible) {
 		this.isEligible = isEligible;
 	}
 

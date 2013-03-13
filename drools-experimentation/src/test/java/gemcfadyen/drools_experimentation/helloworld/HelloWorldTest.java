@@ -16,7 +16,7 @@ public class HelloWorldTest {
 
 	@Before
 	public void setupDroolsKnowledgeBase() {
-		statefulSession = DroolsWorkingMemoryHelper.getStatefulWorkingMemoryUsingDroolsFile("hello-world.drl");
+		statefulSession = DroolsWorkingMemoryHelper.getStatefulWorkingMemoryUsingDroolsFile("hello-world.drl", this.getClass());
 		logger = KnowledgeRuntimeLoggerFactory.newFileLogger(statefulSession, "C:/Users/Georgina/Documents/GitHub/Drools/log/helloworld");
 	}
 

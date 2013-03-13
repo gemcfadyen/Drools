@@ -9,7 +9,7 @@ then
 	modify(m) {message = "Goodbye", status = Message.GOODBYE}
 end
 
-rule "Goodbye" dialect "java"
+rule "Goodbye"
 when
 	Message (status == Message.GOODBYE, message : message)
 then

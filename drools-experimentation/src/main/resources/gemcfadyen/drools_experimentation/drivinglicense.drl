@@ -1,0 +1,20 @@
+package gemcfadyen.drools_experimentation.drivinglicense;
+
+import gemcfadyen.drools_experimentation.drivinglicense.Applicant;
+
+rule "isChild"
+when
+   $a : Applicant(age < 18)
+
+then
+	System.out.println("Applicant is under 18");
+    $a.setIsEligible(false);
+end
+
+rule "isAdult"
+when
+   $a : Applicant(age >= 18)
+then
+	System.out.println("Applicant is over 18");
+      $a.setIsEligible(true);
+end

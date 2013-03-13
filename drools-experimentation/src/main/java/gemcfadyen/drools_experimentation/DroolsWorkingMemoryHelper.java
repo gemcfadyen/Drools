@@ -1,7 +1,5 @@
 package gemcfadyen.drools_experimentation;
 
-import gemcfadyen.drools_experimentation.helloworld.HelloWorld;
-
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -21,22 +19,22 @@ public class DroolsWorkingMemoryHelper {
 		return knowledgeBase;
 	}
 	
-	private static KnowledgeBuilder getKnowledgeBuilderWithDroolsFileNamed(String drlFileName){
+	private static KnowledgeBuilder getKnowledgeBuilderWithDroolsFileNamed(String drlFileName, Class className ){
 		KnowledgeBuilder knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		
-		Resource drlFile = ResourceFactory.newClassPathResource("../" + drlFileName, HelloWorld.class);
+		Resource drlFile = ResourceFactory.newClassPathResource("../" + drlFileName, className);
 		knowledgeBuilder.add(drlFile, ResourceType.DRL);
 		
 		if (knowledgeBuilder.hasErrors()) {
 			System.out.println("Errors found in knowledge builder " + knowledgeBuilder.getErrors().toString());
-			throw new RuntimeException("Can't compile hello-world.drl");
+			throw new RuntimeException("Can't compile " + drlFileName);
 		}
 		
 		return knowledgeBuilder;
 	}
 	
-	public static StatefulKnowledgeSession getStatefulWorkingMemoryUsingDroolsFile(String drlFilename){
-		KnowledgeBase knowledgeBase = getKnowledgeBaseInitialisedWithDroolsFileNamed(getKnowledgeBuilderWithDroolsFileNamed(drlFilename));
+	public static StatefulKnowledgeSession getStatefulWorkingMemoryUsingDroolsFile(String drlFilename, Class className){
+		KnowledgeBase knowledgeBase = getKnowledgeBaseInitialisedWithDroolsFileNamed(getKnowledgeBuilderWithDroolsFileNamed(drlFilename, className));
 		
 		StatefulKnowledgeSession statefulSession = knowledgeBase.newStatefulKnowledgeSession();
 		statefulSession.addEventListener(new DebugWorkingMemoryEventListener());
@@ -44,8 +42,8 @@ public class DroolsWorkingMemoryHelper {
 		return statefulSession;
 	}
 	
-	public static StatelessKnowledgeSession getStatelessWorkingMemoryUsingDroolsFile(String drlFilename){
-		KnowledgeBase knowledgeBase = getKnowledgeBaseInitialisedWithDroolsFileNamed(getKnowledgeBuilderWithDroolsFileNamed(drlFilename));
+	public static StatelessKnowledgeSession getStatelessWorkingMemoryUsingDroolsFile(String drlFilename, Class className){
+		KnowledgeBase knowledgeBase = getKnowledgeBaseInitialisedWithDroolsFileNamed(getKnowledgeBuilderWithDroolsFileNamed(drlFilename, className));
 		return knowledgeBase.newStatelessKnowledgeSession();
 	}
 }
