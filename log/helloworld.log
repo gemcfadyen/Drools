@@ -3,18 +3,18 @@
   <type>4</type>
   <activationId>Hello World [1]</activationId>
   <rule>Hello World</rule>
-  <declarations>message=Hello World(1); m=gemcfadyen.drools_experimentation.helloworld.Message@7a20807c(1)</declarations>
+  <declarations>message=Hello World(1); m=gemcfadyen.drools_experimentation.helloworld.Message@92696c2(1)</declarations>
 </org.drools.audit.event.ActivationLogEvent>
 <org.drools.audit.event.ObjectLogEvent>
   <type>1</type>
   <factId>1</factId>
-  <objectToString>gemcfadyen.drools_experimentation.helloworld.Message@7a20807c</objectToString>
+  <objectToString>gemcfadyen.drools_experimentation.helloworld.Message@92696c2</objectToString>
 </org.drools.audit.event.ObjectLogEvent>
 <org.drools.audit.event.ActivationLogEvent>
   <type>6</type>
   <activationId>Hello World [1]</activationId>
   <rule>Hello World</rule>
-  <declarations>message=Hello World(1); m=gemcfadyen.drools_experimentation.helloworld.Message@7a20807c(1)</declarations>
+  <declarations>message=Hello World(1); m=gemcfadyen.drools_experimentation.helloworld.Message@92696c2(1)</declarations>
 </org.drools.audit.event.ActivationLogEvent>
 <org.drools.audit.event.ActivationLogEvent>
   <type>4</type>
@@ -25,13 +25,13 @@
 <org.drools.audit.event.ObjectLogEvent>
   <type>2</type>
   <factId>1</factId>
-  <objectToString>gemcfadyen.drools_experimentation.helloworld.Message@7a20807c</objectToString>
+  <objectToString>gemcfadyen.drools_experimentation.helloworld.Message@92696c2</objectToString>
 </org.drools.audit.event.ObjectLogEvent>
 <org.drools.audit.event.ActivationLogEvent>
   <type>7</type>
   <activationId>Hello World [1]</activationId>
   <rule>Hello World</rule>
-  <declarations>message=Goodbye(1); m=gemcfadyen.drools_experimentation.helloworld.Message@7a20807c(1)</declarations>
+  <declarations>message=Goodbye(1); m=gemcfadyen.drools_experimentation.helloworld.Message@92696c2(1)</declarations>
 </org.drools.audit.event.ActivationLogEvent>
 <org.drools.audit.event.ActivationLogEvent>
   <type>6</type>
