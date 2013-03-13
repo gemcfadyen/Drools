@@ -2,6 +2,8 @@
 *.project
 *.classpath
 *.prefs
+*.log
+target
 
 # Package Files #
 *.jar
