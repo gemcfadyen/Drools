@@ -7,6 +7,7 @@ import gemcfadyen.drools_experimentation.DroolsWorkingMemoryHelper;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,11 @@ public class HelloWorldTest {
 		logger = KnowledgeRuntimeLoggerFactory.newFileLogger(statefulSession, "C:/Users/Georgina/Documents/GitHub/Drools/log/helloworld");
 	}
 
+	@After
+	public void tearDown(){
+		logger.close();
+		statefulSession.dispose();
+	}
 	
 	@Test
 	public void shouldPrintHelloWorld() {
@@ -29,9 +35,7 @@ public class HelloWorldTest {
 		
 		statefulSession.insert(message);
 		statefulSession.fireAllRules();
-		logger.close();
-		statefulSession.dispose();
-		
+				
 		assertThat(message.getMessage(), is("Goodbye"));
 		assertThat(message.getStatus(), is(1));
 	}
