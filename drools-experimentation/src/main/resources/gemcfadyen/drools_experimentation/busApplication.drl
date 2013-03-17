@@ -1,0 +1,21 @@
+package gemcfadyen.drools_experimentation.drivinglicense;
+
+import gemcfadyen.drools_experimentation.drivinglicense.Driver;
+import gemcfadyen.drools_experimentation.drivinglicense.Application;
+
+
+rule "sets eligable to true if application was made prior to cut-off date"
+when
+	 Driver()
+     application : Application(dateOfApplication < "01-jan-2011")
+then
+     application.setIsEligable(true);
+end
+
+rule "sets eligable to false if application was made after to cut-off date"
+when
+     Driver()
+     application : Application(dateOfApplication >= "01-jan-2011")
+then
+     application.setIsEligable(false);
+end
