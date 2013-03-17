@@ -1,0 +1,25 @@
+package gemcfadyen.drools_experimentation.firealarm;
+
+import gemcfadyen.drools_experimentation.firealarm.Fire;
+import gemcfadyen.drools_experimentation.firealarm.Sprinkler;
+import gemcfadyen.drools_experimentation.firealarm.Room;
+import gemcfadyen.drools_experimentation.firealarm.Alarm;
+
+rule "if sprinkler is switched on raise alarm"
+when
+	Fire()
+	//sprinkler : Sprinkler(room == r, isOn == true)
+then
+	insert (new Alarm());
+	System.out.println("Alarm raised as a fire exists");
+end
+
+rule "if there is a fire, turn the sprinkler on"
+when
+      Fire(r : room)
+      sprinkler : Sprinkler(room == r, isOn == false)
+then
+  	// sprinkler.setIsOn(true); If you use java syntax in a StatefulKnowledgeSession, the facts are not re-reasoned over if changd
+ 	modify(sprinkler) {setIsOn(true)} //using modify means the rules will be re-evaluated once the state has changed
+ 	System.out.println("Sprinkler turned on for the room named " + r.getName());
+end
