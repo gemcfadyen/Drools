@@ -16,9 +16,9 @@ public class FireAlarmTest {
 	private Room kitchen;
 	private Room bedroom;
 
-	Sprinkler livingRoomSprinkler;
-	Sprinkler kitchenSprinkler;
-	Sprinkler bedroomSprinkler;
+	private Sprinkler livingRoomSprinkler;
+	private Sprinkler kitchenSprinkler;
+	private Sprinkler bedroomSprinkler;
 
 	@Before
 	public void setup() {
