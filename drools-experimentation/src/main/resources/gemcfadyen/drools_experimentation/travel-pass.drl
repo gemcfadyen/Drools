@@ -1,0 +1,26 @@
+package gemcfadyen.drools_experimentation.drivinglicense;
+import gemcfadyen.drools_experimentation.drivinglicense.Applicant;
+import gemcfadyen.drools_experimentation.drivinglicense.IsChild;
+import gemcfadyen.drools_experimentation.drivinglicense.IsAdult;
+
+rule "should infer the person is a child and insert an IsChild object"
+when
+    Applicant (age < 16)
+then
+    insert (new IsChild());
+end
+
+rule "should infer the person is an adult and insert an IsAdult object"
+when
+    Applicant (age >= 16)
+then
+    insert (new IsAdult());
+end
+
+rule "should revoke IsChild when applicant becomes an adult"
+when
+	Applicant(age >= 16)
+	child : IsChild()
+then
+ 	retract (child);
+end

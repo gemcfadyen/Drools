@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This is a kata dreamt up by a male colleague :-)
+ * This is a kata - dreamt up by a male colleague :-)
  * 
  * @author Georgina
  *
@@ -30,11 +30,9 @@ public class DrunkenAnticsTest {
 		KnowledgeBuilder knowledgeBuilder = KnowledgeBuilderFactory
 				.newKnowledgeBuilder();
 
-		Resource drlfile = ResourceFactory
-				.newClassPathResource("../drunken-antics.drl", this.getClass());
+		Resource drlfile = ResourceFactory.newClassPathResource("../drunken-antics.drl", this.getClass());
 		knowledgeBuilder.add(drlfile, ResourceType.DRL);
-		knowledgeBase.addKnowledgePackages(knowledgeBuilder
-				.getKnowledgePackages());
+		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
 
 		if (knowledgeBuilder.hasErrors()) {
 			System.out.println("Errors in drools file"
@@ -73,7 +71,7 @@ public class DrunkenAnticsTest {
 	}
 	
 	@Test
-	public void shouldReturnThatTheWomanIsAnAdultererIfSheIsNotSingleButTheGuyIs(){
+	public void shouldReturnThatTheWomanIsAnAdultererIfSheIsNotSingleButTheGuyIsSingle(){
 		boolean isSingle = true;
 		
 		Man geezer = new Man(isSingle);
@@ -86,5 +84,5 @@ public class DrunkenAnticsTest {
 		assertTrue(geezer.getIsLoyal());
 		assertFalse(gal.getIsLoyal());
 	}
-
+	
 }

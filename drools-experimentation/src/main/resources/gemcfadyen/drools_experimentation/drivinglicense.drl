@@ -16,5 +16,5 @@ when
    $a : Applicant(age >= 18)
 then
 	System.out.println("Applicant is over 18");
-      $a.setIsEligible(true);
+    $a.setIsEligible(true);
 end
