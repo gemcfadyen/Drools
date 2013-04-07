@@ -1,5 +1,6 @@
 package gemcfadyen.drools_experimentation.drunkenantics;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.drools.KnowledgeBase;
@@ -12,6 +13,13 @@ import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Before;
 import org.junit.Test;
+
+/**
+ * This is a kata dreamt up by a male colleague :-)
+ * 
+ * @author Georgina
+ *
+ */
 
 public class DrunkenAnticsTest {
 	private StatefulKnowledgeSession statefulSession;
@@ -48,6 +56,35 @@ public class DrunkenAnticsTest {
 		
 		assertTrue(geezer.getIsLoyal());
 		assertTrue(gal.getIsLoyal());
+	}
+	
+	@Test
+	public void shouldReturnThatBothManAndWomanAreAdultersIfNeitherAreSingle(){
+		boolean notSingle = false;
+		Man geezer = new Man(notSingle);
+		Woman gal = new Woman(notSingle);
+
+		statefulSession.insert(geezer);
+		statefulSession.insert(gal);
+		statefulSession.fireAllRules();
+		
+		assertFalse(geezer.getIsLoyal());
+		assertFalse(gal.getIsLoyal());
+	}
+	
+	@Test
+	public void shouldReturnThatTheWomanIsAnAdultererIfSheIsNotSingleButTheGuyIs(){
+		boolean isSingle = true;
+		
+		Man geezer = new Man(isSingle);
+		Woman gal = new Woman(!isSingle);
+
+		statefulSession.insert(geezer);
+		statefulSession.insert(gal);
+		statefulSession.fireAllRules();
+		
+		assertTrue(geezer.getIsLoyal());
+		assertFalse(gal.getIsLoyal());
 	}
 
 }

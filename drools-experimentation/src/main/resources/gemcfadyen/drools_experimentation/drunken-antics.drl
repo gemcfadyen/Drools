@@ -2,11 +2,17 @@ package gemcfadyen.drools_experimentation.drunkenantics;
 import gemcfadyen.drools_experimentation.drunkenantics.Man;
 import gemcfadyen.drools_experimentation.drunkenantics.Woman;
 
-rule "should establish that no affair has taken place if both the male and female are single"
+rule "should establish that no unfaithfulness has taken place by male if male is single"
 when
   man : Man(isSingle == true)
-  woman : Woman(isSingle == true)
 then
   man.setLoyal(true);
+ 
+end
+
+rule "should establish that no unfaithfulness has taken place by woman if woman is single"
+when
+   woman : Woman(isSingle == true)
+then
   woman.setLoyal(true);
 end
