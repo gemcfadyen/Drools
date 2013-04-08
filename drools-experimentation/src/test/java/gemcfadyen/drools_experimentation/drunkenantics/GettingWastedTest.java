@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import gemcfadyen.drools_experimentation.DroolsWorkingMemoryEventListener;
 import gemcfadyen.drools_experimentation.drunkenantics.Person.PersonType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.drools.KnowledgeBase;
@@ -16,6 +17,7 @@ import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.rule.FactHandle;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -142,8 +144,10 @@ public class GettingWastedTest {
 		
 	
 		List<Object> newObjectsInSession = workingMemoryEventListener.getActualObjectInserted();
-		Puke puker = getThePersonWhoPuked(newObjectsInSession);
-		assertTrue(puker.equals(new Puke(drunkGeordie)));
+		List<Puke> pukers = getAllThoseSick(newObjectsInSession);
+		
+		assertThat(pukers.size(), is(1));
+		assertTrue(pukers.get(0).equals(new Puke(drunkGeordie)));
 		
 	}
 	
@@ -162,8 +166,9 @@ public class GettingWastedTest {
 		
 		List<String> factsInTheSession = workingMemoryEventListener.getInsertedObjects();
 		assertTrue(factsInTheSession.contains("Puke"));
-		Puke puker = getThePersonWhoPuked(workingMemoryEventListener.getActualObjectInserted());
-		assertTrue(puker.equals(new Puke(drunkGeordie)));
+		List<Puke> pukers = getAllThoseSick(workingMemoryEventListener.getActualObjectInserted());
+		assertThat(pukers.size(), is(1));
+		assertTrue(pukers.get(0).equals(new Puke(drunkGeordie)));
 		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
 		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(9));
 		
@@ -188,8 +193,9 @@ public class GettingWastedTest {
 		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(9));
 		
 		assertTrue(workingMemoryEventListener.getInsertedObjects().contains("Puke"));
-		Puke puker = getThePersonWhoPuked(workingMemoryEventListener.getActualObjectInserted());
-		assertTrue(puker.equals(new Puke(drunkGeordie)));
+		List<Puke> pukers = getAllThoseSick(workingMemoryEventListener.getActualObjectInserted());
+		assertThat(pukers.size(), is(1));
+		assertTrue(pukers.get(0).equals(new Puke(drunkGeordie)));
 		
 		//Because the drunkGeordie has been sick we want to send a bouncer in to sort the situation out
 		Person bouncer = new Person(PersonType.BOUNCER);
@@ -197,32 +203,121 @@ public class GettingWastedTest {
 		workingMemory.fireAllRules();
 	
 		//The bouncer evicts the drunk Geordie, the sick is cleaned up. This allows the sobreMan to get served
-		Person wasted = getThePersonWhoWasChuckedOut(workingMemoryEventListener.getActualObjectsRetracted());
+		List<Object> wasters = getAllFactsRemovedFromTheSession(workingMemoryEventListener.getActualObjectsRetracted());
 		
-		assertTrue(wasted.equals(drunkGeordie));
+		assertThat(wasters.size(), is(2));
+		assertTrue(wasters.get(0).equals(drunkGeordie));
+		assertTrue(wasters.get(1).equals(new Puke(drunkGeordie)));
 		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
 		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(10)); //man's drink count has gone up proving the sick has been cleaned up
 	}
 	
-	private Puke getThePersonWhoPuked(List<Object> factsInSession){
-		Puke puker = null;
-		for(Object insertedFacts: factsInSession){
-			if (insertedFacts instanceof Puke){
-				puker = (Puke)insertedFacts;
-			}
-			
-		}
-		return puker;
+	@Test
+	public void shouldSeveralPeopleBeSickTheBouncerShouldSortOutTheCrowd(){
+		Person drunkGeordie = new Person(PersonType.GEORDIE);
+		drunkGeordie.setNumberOfDrinksConsumed(49);
+		
+		Person sobreMan = new Person(PersonType.MAN);
+		sobreMan.setNumberOfDrinksConsumed(9);
+		
+		Person sobreWoman = new Person(PersonType.MAN);
+		sobreWoman.setNumberOfDrinksConsumed(1);
+		
+		workingMemory.addEventListener(workingMemoryEventListener);
+		FactHandle geordieFactHandle = workingMemory.insert(drunkGeordie);
+		FactHandle mansFactHandle = workingMemory.insert(sobreMan);
+		workingMemory.insert(sobreWoman);
+
+		workingMemory.fireAllRules();
+		
+		//because one member of the party is above the limit, neither person gets served another drink
+		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
+		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(10));
+		assertThat(sobreWoman.getNumberOfDrinksConsumed(), is(2));
+
+		//re-evaluate the rools now that the Geordie has reached his limit
+		workingMemory.update(geordieFactHandle, drunkGeordie);
+		workingMemory.fireAllRules();
+		
+		assertTrue(workingMemoryEventListener.getInsertedObjects().contains("Puke"));
+		List<Puke> pukers = getAllThoseSick(workingMemoryEventListener.getActualObjectInserted());
+		assertThat(pukers.size(), is(1));
+		assertTrue(pukers.get(0).equals(new Puke(drunkGeordie)));
+		
+		//The man has had some sneaky drinks out the back...re-evaluate the rules
+		sobreMan.setNumberOfDrinksConsumed(20);
+		workingMemory.update(mansFactHandle, sobreMan);
+		workingMemory.fireAllRules();
+		
+		pukers = getAllThoseSick(workingMemoryEventListener.getActualObjectInserted());
+		assertThat(pukers.size(), is(2));
+		assertTrue(pukers.contains(new Puke(drunkGeordie)));
+		assertTrue(pukers.contains(new Puke(sobreMan)));
+		
+		//sobreWoman wants a drink but can't get served because of the commotion
+		assertThat(sobreWoman.getNumberOfDrinksConsumed(), is(2));
+		
+		//send a bouncer in to sort out the mess
+     	Person bouncer = new Person(PersonType.BOUNCER);
+		workingMemory.insert(bouncer);
+		workingMemory.fireAllRules();
+		
+		List<Object> wasters = getAllFactsRemovedFromTheSession(workingMemoryEventListener.getActualObjectsRetracted());
+		assertThat(wasters.size(), is(4));
+		assertTrue(wasters.contains(sobreMan));
+		assertTrue(wasters.contains(drunkGeordie));
+		assertTrue(wasters.contains(new Puke(drunkGeordie)));
+		assertTrue(wasters.contains(new Puke(sobreMan)));
+		
+		//now the mess is cleaned up, the lady can get her cocktail..
+		assertThat(sobreWoman.getNumberOfDrinksConsumed(), is(3));	
 	}
 	
-	private Person getThePersonWhoWasChuckedOut(List<Object> peopleRetracted){
-		Person personChuckedOut = null;
-		for(Object person : peopleRetracted){
-			if(person instanceof Person){
-				personChuckedOut = (Person)person;
-				System.out.println("person chucked out " + personChuckedOut.getType().toString());
+	@Test
+	public void shouldNotServeAnyoneWhoIsOverTheirMaximumLimit(){
+		Person alcoholic = new Person(PersonType.MAN);
+		alcoholic.setNumberOfDrinksConsumed(100); //exceeded limit already
+		
+		workingMemory.insert(alcoholic);
+		workingMemory.addEventListener(workingMemoryEventListener);
+		workingMemory.fireAllRules();
+		
+		//cant be served anymore
+		assertThat(alcoholic.getNumberOfDrinksConsumed(), is(100));
+		//Alcoholic is hardened so is not sick
+		assertThat(workingMemoryEventListener.getActualObjectInserted().size(), is(0)); 
+	}
+	
+	private List<Puke> getAllThoseSick(List<Object> factsInSession){
+		List<Puke> lightweights = new ArrayList<Puke>();
+		
+		for(Object insertedFacts: factsInSession){
+			Puke puker = null;
+			if (insertedFacts instanceof Puke){
+				puker = (Puke)insertedFacts;
+				lightweights.add(puker);
 			}
 		}
-		return personChuckedOut;
+		return lightweights;
+	}
+	
+	
+	private List<Object> getAllFactsRemovedFromTheSession(List<Object> peopleRetracted){
+		List<Object> evictedFromSession = new ArrayList<Object>();
+		
+		for(Object facts : peopleRetracted){
+			if(facts instanceof Person){
+				Person personChuckedOut = (Person)facts;
+				evictedFromSession.add(personChuckedOut);
+				System.out.println("person chucked out " + personChuckedOut.getType().toString());
+			}
+			
+			if(facts instanceof Puke){
+				Puke chunder = (Puke)facts;
+				evictedFromSession.add(chunder);
+				System.out.println("puke cleaned up");
+			}
+		}
+		return evictedFromSession;
 	}
 }
