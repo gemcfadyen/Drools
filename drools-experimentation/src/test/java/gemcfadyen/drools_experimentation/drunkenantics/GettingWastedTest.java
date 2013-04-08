@@ -111,7 +111,7 @@ public class GettingWastedTest {
 	}
 
 	@Test
-	public void shouldOnlyServeThosePeopleWhoAreUnderTheLimit() {
+	public void shouldServeNobodyIfAnyOneInThePartyIsOverTheLimit() {
 		Person drunkGeordie = new Person(PersonType.GEORDIE);
 		drunkGeordie.setNumberOfDrinksConsumed(50);
 		Person sobreWoman = new Person(PersonType.WOMAN);
@@ -125,8 +125,8 @@ public class GettingWastedTest {
 		workingMemory.fireAllRules();
 		
 		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
-		assertThat(sobreWoman.getNumberOfDrinksConsumed(), is(13));
-		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(12));
+		assertThat(sobreWoman.getNumberOfDrinksConsumed(), is(12));
+		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(11));
 	}
 	
 	@Test
@@ -140,6 +140,26 @@ public class GettingWastedTest {
 		
 		List<String> factsInTheSession = workingMemoryEventListener.getInsertedObjects();
 		assertTrue(factsInTheSession.contains("Puke"));
+		
+	}
+	
+	@Test
+	public void shouldNotServeAnyoneAtThePartyIfThereIsAnySick(){
+		Person drunkGeordie = new Person(PersonType.GEORDIE);
+		drunkGeordie.setNumberOfDrinksConsumed(50);
+		
+		Person sobreMan = new Person(PersonType.MAN);
+		sobreMan.setNumberOfDrinksConsumed(9);
+		
+		workingMemory.addEventListener(workingMemoryEventListener);
+		workingMemory.insert(drunkGeordie);
+		workingMemory.insert(sobreMan);
+		workingMemory.fireAllRules();
+		
+		List<String> factsInTheSession = workingMemoryEventListener.getInsertedObjects();
+		assertTrue(factsInTheSession.contains("Puke"));
+		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
+		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(9));
 		
 	}
 }

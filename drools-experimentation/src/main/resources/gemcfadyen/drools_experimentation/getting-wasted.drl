@@ -6,6 +6,7 @@ import gemcfadyen.drools_experimentation.drunkenantics.Puke;
 rule "should give a man a drink if he is not over the limit"
 when
    man : Person(type == PersonType.MAN, numberOfDrinksConsumed < PersonType.MAN.getMaxUnits())
+   not (exists (Puke()))
 then
    man.addToTotalNumberOfDrinks();
 end
@@ -13,6 +14,7 @@ end
 rule "should give a woman another drink if she is not over the limit"
 when
    woman : Person(type == PersonType.WOMAN, numberOfDrinksConsumed < PersonType.WOMAN.getMaxUnits())
+   not (exists (Puke()))
 then 
    woman.addToTotalNumberOfDrinks();
 end
@@ -20,11 +22,13 @@ end
 rule "should give a geordie another drink if they are not over the limit"
 when
    geordie : Person(type == PersonType.GEORDIE, numberOfDrinksConsumed < PersonType.GEORDIE.getMaxUnits())
+   not (exists (Puke()))
 then 
    geordie.addToTotalNumberOfDrinks();
 end
 
 rule "should insert puke into the session when person reaches their alcohol intake limit"
+salience 1
 when 
     Person(type == PersonType.MAN, numberOfDrinksConsumed == PersonType.MAN.getMaxUnits()) or
     Person(type == PersonType.WOMAN, numberOfDrinksConsumed == PersonType.WOMAN.getMaxUnits()) or
