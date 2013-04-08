@@ -142,12 +142,7 @@ public class GettingWastedTest {
 		
 	
 		List<Object> newObjectsInSession = workingMemoryEventListener.getActualObjectInserted();
-		Puke puker = null;
-		for(Object insertedFacts: newObjectsInSession){
-			if (insertedFacts instanceof Puke){
-				puker = (Puke)insertedFacts;
-			}
-		}
+		Puke puker = getThePersonWhoPuked(newObjectsInSession);
 		assertTrue(puker.equals(new Puke(drunkGeordie)));
 		
 	}
@@ -167,8 +162,67 @@ public class GettingWastedTest {
 		
 		List<String> factsInTheSession = workingMemoryEventListener.getInsertedObjects();
 		assertTrue(factsInTheSession.contains("Puke"));
+		Puke puker = getThePersonWhoPuked(workingMemoryEventListener.getActualObjectInserted());
+		assertTrue(puker.equals(new Puke(drunkGeordie)));
 		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
 		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(9));
 		
+	}
+	
+	@Test
+	public void shouldRemoveTheSickPeopleIfABouncerIsPresent(){
+		Person drunkGeordie = new Person(PersonType.GEORDIE);
+		drunkGeordie.setNumberOfDrinksConsumed(50);
+		
+		Person sobreMan = new Person(PersonType.MAN);
+		sobreMan.setNumberOfDrinksConsumed(9);
+		
+		workingMemory.addEventListener(workingMemoryEventListener);
+		workingMemory.insert(drunkGeordie);
+		workingMemory.insert(sobreMan);
+
+		workingMemory.fireAllRules();
+		
+		//because one member of the party is above the limit, neither person gets served another drink
+		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
+		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(9));
+		
+		assertTrue(workingMemoryEventListener.getInsertedObjects().contains("Puke"));
+		Puke puker = getThePersonWhoPuked(workingMemoryEventListener.getActualObjectInserted());
+		assertTrue(puker.equals(new Puke(drunkGeordie)));
+		
+		//Because the drunkGeordie has been sick we want to send a bouncer in to sort the situation out
+		Person bouncer = new Person(PersonType.BOUNCER);
+		workingMemory.insert(bouncer);
+		workingMemory.fireAllRules();
+	
+		//The bouncer evicts the drunk Geordie, the sick is cleaned up. This allows the sobreMan to get served
+		Person wasted = getThePersonWhoWasChuckedOut(workingMemoryEventListener.getActualObjectsRetracted());
+		
+		assertTrue(wasted.equals(drunkGeordie));
+		assertThat(drunkGeordie.getNumberOfDrinksConsumed(), is(50));
+		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(10)); //man's drink count has gone up proving the sick has been cleaned up
+	}
+	
+	private Puke getThePersonWhoPuked(List<Object> factsInSession){
+		Puke puker = null;
+		for(Object insertedFacts: factsInSession){
+			if (insertedFacts instanceof Puke){
+				puker = (Puke)insertedFacts;
+			}
+			
+		}
+		return puker;
+	}
+	
+	private Person getThePersonWhoWasChuckedOut(List<Object> peopleRetracted){
+		Person personChuckedOut = null;
+		for(Object person : peopleRetracted){
+			if(person instanceof Person){
+				personChuckedOut = (Person)person;
+				System.out.println("person chucked out " + personChuckedOut.getType().toString());
+			}
+		}
+		return personChuckedOut;
 	}
 }

@@ -4,7 +4,7 @@ package gemcfadyen.drools_experimentation.drunkenantics;
 
 public class Person {
 	public enum PersonType {
-		MAN(20), WOMAN(15), GEORDIE(50);
+		MAN(20), WOMAN(15), GEORDIE(50), BOUNCER(0);
 
 		private int maxUnits;
 

@@ -16,7 +16,7 @@ when
    woman : Person(type == PersonType.WOMAN, numberOfDrinksConsumed < PersonType.WOMAN.getMaxUnits())
    not (exists (Puke()))
 then 
-   woman.addToTotalNumberOfDrinks();
+    woman.addToTotalNumberOfDrinks();
 end
 
 rule "should give a geordie another drink if they are not over the limit"
@@ -55,5 +55,14 @@ then
     insert (new Puke(woman));
 end
 
+
+rule "should evict the drunk person from the pub when a bouncer is present"
+when
+	Person(type == PersonType.BOUNCER)
+	puker : Puke($drunkPerson : drunkPerson)
+then
+    retract($drunkPerson);
+	retract(puker);
+end
 
 
