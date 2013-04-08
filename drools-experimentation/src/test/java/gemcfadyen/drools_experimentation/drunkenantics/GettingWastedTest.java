@@ -2,7 +2,11 @@ package gemcfadyen.drools_experimentation.drunkenantics;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import gemcfadyen.drools_experimentation.DroolsWorkingMemoryEventListener;
 import gemcfadyen.drools_experimentation.drunkenantics.Person.PersonType;
+
+import java.util.List;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -12,11 +16,13 @@ import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class GettingWastedTest {
 	private StatefulKnowledgeSession workingMemory;
+	private DroolsWorkingMemoryEventListener workingMemoryEventListener = new DroolsWorkingMemoryEventListener();
 
 	@Before
 	public void setup() {
@@ -123,5 +129,17 @@ public class GettingWastedTest {
 		assertThat(sobreMan.getNumberOfDrinksConsumed(), is(12));
 	}
 	
-	
+	@Test
+	public void shouldMakeDrunkPersonSickWhenTheyExceedTheirAlcoholLimit(){
+		Person drunkGeordie = new Person(PersonType.GEORDIE);
+		drunkGeordie.setNumberOfDrinksConsumed(50);
+		
+		workingMemory.addEventListener(workingMemoryEventListener);
+		workingMemory.insert(drunkGeordie);
+		workingMemory.fireAllRules();
+		
+		List<String> factsInTheSession = workingMemoryEventListener.getInsertedObjects();
+		assertTrue(factsInTheSession.contains("Puke"));
+		
+	}
 }

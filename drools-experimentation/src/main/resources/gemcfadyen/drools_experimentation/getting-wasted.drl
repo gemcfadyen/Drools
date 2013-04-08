@@ -1,6 +1,7 @@
 package gemcfadyen.drools_experimentation.drunkenantics;
 import gemcfadyen.drools_experimentation.drunkenantics.Person.PersonType;
 import gemcfadyen.drools_experimentation.drunkenantics.Person;
+import gemcfadyen.drools_experimentation.drunkenantics.Puke;
 
 rule "should give a man a drink if he is not over the limit"
 when
@@ -21,4 +22,13 @@ when
    geordie : Person(type == PersonType.GEORDIE, numberOfDrinksConsumed < PersonType.GEORDIE.getMaxUnits())
 then 
    geordie.addToTotalNumberOfDrinks();
+end
+
+rule "should insert puke into the session when person reaches their alcohol intake limit"
+when 
+    Person(type == PersonType.MAN, numberOfDrinksConsumed == PersonType.MAN.getMaxUnits()) or
+    Person(type == PersonType.WOMAN, numberOfDrinksConsumed == PersonType.WOMAN.getMaxUnits()) or
+    Person(type == PersonType.GEORDIE, numberOfDrinksConsumed == PersonType.GEORDIE.getMaxUnits())
+then
+    insert (new Puke());
 end
