@@ -16,7 +16,6 @@ import org.drools.builder.ResourceType;
 import org.drools.io.Resource;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -140,6 +139,16 @@ public class GettingWastedTest {
 		
 		List<String> factsInTheSession = workingMemoryEventListener.getInsertedObjects();
 		assertTrue(factsInTheSession.contains("Puke"));
+		
+	
+		List<Object> newObjectsInSession = workingMemoryEventListener.getActualObjectInserted();
+		Puke puker = null;
+		for(Object insertedFacts: newObjectsInSession){
+			if (insertedFacts instanceof Puke){
+				puker = (Puke)insertedFacts;
+			}
+		}
+		assertTrue(puker.equals(new Puke(drunkGeordie)));
 		
 	}
 	

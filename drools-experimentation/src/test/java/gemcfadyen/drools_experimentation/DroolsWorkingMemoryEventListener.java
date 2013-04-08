@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.drools.event.rule.WorkingMemoryEventListener;
+import org.drools.runtime.rule.FactHandle;
 /**
  * The event listener will keep track of the objects in the session
  * @author Georgina
@@ -12,6 +13,7 @@ import org.drools.event.rule.WorkingMemoryEventListener;
 public class DroolsWorkingMemoryEventListener implements WorkingMemoryEventListener {
 
 	private List<String> objectsInserted = new ArrayList<String>();
+    private List<Object> actualObjectsInserted = new ArrayList<Object>();
 	private List<String> objectsUpdated = new ArrayList<String>();
 	private List<String> objectsRetracted = new ArrayList<String>();
 	
@@ -19,7 +21,9 @@ public class DroolsWorkingMemoryEventListener implements WorkingMemoryEventListe
 	public void objectInserted(org.drools.event.rule.ObjectInsertedEvent event) {
 		System.out.println("Object inserted " + event.getObject().getClass().getSimpleName());
 		objectsInserted.add(event.getObject().getClass().getSimpleName());
-
+		
+		Object insertedObject = event.getObject();
+		actualObjectsInserted.add(insertedObject);
 	}
 
 	@Override
@@ -46,5 +50,9 @@ public class DroolsWorkingMemoryEventListener implements WorkingMemoryEventListe
 	
 	public List<String> getRetractedObjects(){
 		return objectsRetracted;
+	}
+
+	public List<Object> getActualObjectInserted(){
+		return actualObjectsInserted;
 	}
 }

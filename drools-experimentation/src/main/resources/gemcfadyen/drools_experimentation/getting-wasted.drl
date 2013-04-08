@@ -27,12 +27,33 @@ then
    geordie.addToTotalNumberOfDrinks();
 end
 
-rule "should insert puke into the session when person reaches their alcohol intake limit"
+/**
+Salience needs to be set on the puking rules, so that they are run ahead of the others. 
+This way, it is not possible for a member of a party to get served if one of the members has puked
+**/
+rule "should insert puke into the session when geordie reaches their alcohol intake limit"
 salience 1
 when 
-    Person(type == PersonType.MAN, numberOfDrinksConsumed == PersonType.MAN.getMaxUnits()) or
-    Person(type == PersonType.WOMAN, numberOfDrinksConsumed == PersonType.WOMAN.getMaxUnits()) or
-    Person(type == PersonType.GEORDIE, numberOfDrinksConsumed == PersonType.GEORDIE.getMaxUnits())
+    geordie : Person(type == PersonType.GEORDIE, numberOfDrinksConsumed == PersonType.GEORDIE.getMaxUnits())
 then
-    insert (new Puke());
+    insert (new Puke(geordie));
 end
+
+rule "should insert puke into the session when man reaches his alcohol intake limit"
+salience 1
+when 
+    man : Person(type == PersonType.MAN, numberOfDrinksConsumed == PersonType.MAN.getMaxUnits())
+then
+    insert (new Puke(man));
+end
+
+rule "should insert puke into the session when woman reaches her alcohol intake limit"
+salience 1
+when 
+    woman : Person(type == PersonType.WOMAN, numberOfDrinksConsumed == PersonType.WOMAN.getMaxUnits()) 
+then
+    insert (new Puke(woman));
+end
+
+
+
