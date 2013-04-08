@@ -1,0 +1,24 @@
+package gemcfadyen.drools_experimentation.drunkenantics;
+import gemcfadyen.drools_experimentation.drunkenantics.Person.PersonType;
+import gemcfadyen.drools_experimentation.drunkenantics.Person;
+
+rule "should give a man a drink if he is not over the limit"
+when
+   man : Person(type == PersonType.MAN, numberOfDrinksConsumed < PersonType.MAN.getMaxUnits())
+then
+   man.addToTotalNumberOfDrinks();
+end
+
+rule "should give a woman another drink if she is not over the limit"
+when
+   woman : Person(type == PersonType.WOMAN, numberOfDrinksConsumed < PersonType.WOMAN.getMaxUnits())
+then 
+   woman.addToTotalNumberOfDrinks();
+end
+
+rule "should give a geordie another drink if they are not over the limit"
+when
+   geordie : Person(type == PersonType.GEORDIE, numberOfDrinksConsumed < PersonType.GEORDIE.getMaxUnits())
+then 
+   geordie.addToTotalNumberOfDrinks();
+end
