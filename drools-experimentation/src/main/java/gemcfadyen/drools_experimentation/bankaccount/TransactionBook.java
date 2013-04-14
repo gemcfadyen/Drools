@@ -1,9 +1,5 @@
 package gemcfadyen.drools_experimentation.bankaccount;
 
-enum TRANSACTION_TYPE {
-	DEPOSIT, WITHDRAW
-};
-
 public class TransactionBook {
 	private int amountForTransaction;
 	private TransactionType transactionType;

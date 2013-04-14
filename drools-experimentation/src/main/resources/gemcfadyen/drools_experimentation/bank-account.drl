@@ -4,12 +4,6 @@ import gemcfadyen.drools_experimentation.bankaccount.BankAccount;
 import gemcfadyen.drools_experimentation.bankaccount.TransactionBook;
 import gemcfadyen.drools_experimentation.bankaccount.TransactionType;
 
-
-//declare any global variables here
-
-
-
-
 rule "should deposit money into bank account"
 
     when
@@ -20,11 +14,10 @@ rule "should deposit money into bank account"
 
 end
 
-rule "Your Second Rule"
-    //include attributes such as "salience" here...
+rule "should withdraw money from the bankaccount"
     when
-        //conditions
+		bankAccount : BankAccount()
+		TransactionBook(transactionType == TransactionType.WITHDRAW, amount : amountForTransaction)
     then
-        //actions
-
+        bankAccount.withdraw(amount);
 end

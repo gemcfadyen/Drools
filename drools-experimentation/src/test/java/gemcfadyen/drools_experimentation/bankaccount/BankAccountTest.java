@@ -56,6 +56,13 @@ public class BankAccountTest {
 	
 	@Test
 	public void shouldWithdrawMoneyFromBankAccount(){
+		BankAccount bankAccount = new BankAccount();
+		bankAccount.deposit(100);
+		TransactionBook moneyToWithdraw = new TransactionBook(5, TransactionType.WITHDRAW);
+		statefulSession.insert(bankAccount);
+		statefulSession.insert(moneyToWithdraw);
+		statefulSession.fireAllRules();
 		
+		assertThat(bankAccount.getAccountBalance(), is(95));
 	}
 }
