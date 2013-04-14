@@ -3,6 +3,7 @@ package gemcfadyen.drools_experimentation
 import gemcfadyen.drools_experimentation.bankaccount.BankAccount;
 import gemcfadyen.drools_experimentation.bankaccount.TransactionBook;
 import gemcfadyen.drools_experimentation.bankaccount.TransactionType;
+import gemcfadyen.drools_experimentation.bankaccount.Block;
 
 rule "should deposit money into bank account"
 
@@ -10,6 +11,7 @@ rule "should deposit money into bank account"
     	bankAccount : BankAccount()
     	TransactionBook(transactionType == TransactionType.DEPOSIT, amount : amountForTransaction)
     then
+     System.out.println("Depositing" + bankAccount.getAccountBalance());
         bankAccount.deposit(amount);
 
 end
@@ -17,7 +19,18 @@ end
 rule "should withdraw money from the bankaccount"
     when
 		bankAccount : BankAccount()
+		not (Block())
 		TransactionBook(transactionType == TransactionType.WITHDRAW, amount : amountForTransaction)
     then
+    System.out.println("Withdrawing amount" + bankAccount.getAccountBalance());
         bankAccount.withdraw(amount);
+end
+
+rule "should block account if balance is negative"
+salience 1
+	when
+		bankAccount : BankAccount(accountBalance < 0)
+	then
+	System.out.println(bankAccount.getAccountBalance());
+		insertLogical(new Block(bankAccount));
 end

@@ -10,13 +10,15 @@ public class BankAccount {
 	public void setAccountBalance(int accountBalance) {
 		this.accountBalance = accountBalance;
 	}
-	
-	public void deposit(int amount){
-		accountBalance = accountBalance + amount;
+
+	public void deposit(int amount) {
+		this.accountBalance = accountBalance + amount;
 	}
-	
-	public void withdraw(int amount){
-		accountBalance = accountBalance - amount;
+
+	public void withdraw(int amount) {
+		System.out.println("Withdrawing " + amount);
+		this.accountBalance = accountBalance - amount;
+		System.out.println("balance " + accountBalance);
 	}
 
 }
