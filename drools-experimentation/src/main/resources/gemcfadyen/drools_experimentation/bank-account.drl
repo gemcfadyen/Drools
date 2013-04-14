@@ -1,0 +1,30 @@
+package gemcfadyen.drools_experimentation
+
+import gemcfadyen.drools_experimentation.bankaccount.BankAccount;
+import gemcfadyen.drools_experimentation.bankaccount.TransactionBook;
+import gemcfadyen.drools_experimentation.bankaccount.TransactionType;
+
+
+//declare any global variables here
+
+
+
+
+rule "should deposit money into bank account"
+
+    when
+    	bankAccount : BankAccount()
+    	TransactionBook(transactionType == TransactionType.DEPOSIT, amount : amountForTransaction)
+    then
+        bankAccount.deposit(amount);
+
+end
+
+rule "Your Second Rule"
+    //include attributes such as "salience" here...
+    when
+        //conditions
+    then
+        //actions
+
+end

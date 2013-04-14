@@ -16,6 +16,13 @@ import org.junit.Test;
 
 /**
  * This is a kata - dreamt up by a male colleague :-)
+ * The rules are about whether a Person can get serviced at a bar
+ * 1. Is Man allowed to get served based on maximum amount
+ * 2. Is Woman allowed to get served based on maximum amount
+ * 3. Is Geordie allowed to get served based on maximum amount
+ * 4. When there is a group of people, who gets served based on their maximum amounts
+ * 5. If any person exceeds the maximum amount then they puke and no one is allowed to get served
+ * 6. If there is a bouncer, then people who puked are removed and others can get served.
  * 
  * @author Georgina
  *
