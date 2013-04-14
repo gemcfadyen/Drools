@@ -11,7 +11,6 @@ rule "should deposit money into bank account"
     	bankAccount : BankAccount()
     	TransactionBook(transactionType == TransactionType.DEPOSIT, amount : amountForTransaction)
     then
-     System.out.println("Depositing" + bankAccount.getAccountBalance());
         bankAccount.deposit(amount);
 
 end
@@ -22,7 +21,6 @@ rule "should withdraw money from the bankaccount"
 		not (Block())
 		TransactionBook(transactionType == TransactionType.WITHDRAW, amount : amountForTransaction)
     then
-    System.out.println("Withdrawing amount" + bankAccount.getAccountBalance());
         bankAccount.withdraw(amount);
 end
 
@@ -31,6 +29,5 @@ salience 1
 	when
 		bankAccount : BankAccount(accountBalance < 0)
 	then
-	System.out.println(bankAccount.getAccountBalance());
 		insertLogical(new Block(bankAccount));
 end
