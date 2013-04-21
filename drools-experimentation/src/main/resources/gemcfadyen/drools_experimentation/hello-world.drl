@@ -14,6 +14,6 @@ rule "Goodbye"
 when
 	Message (status == Message.GOODBYE, message : message)
 then
-list.add("hi");
+    list.add("hi global");
 	System.out.println(message);
 end

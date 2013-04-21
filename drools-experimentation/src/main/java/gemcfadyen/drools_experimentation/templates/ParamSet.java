@@ -3,7 +3,7 @@ package gemcfadyen.drools_experimentation.templates;
 public class ParamSet {
 	
 	private String type;
-	private int limit;
+	public int limit;
 	private boolean isWord;
 
 	public ParamSet(String type, int limit, boolean isWord){
@@ -31,6 +31,37 @@ public class ParamSet {
 
 	public boolean getIsWord() {
 		return isWord;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (isWord ? 1231 : 1237);
+		result = prime * result + limit;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ParamSet other = (ParamSet) obj;
+		if (isWord != other.isWord)
+			return false;
+		if (limit != other.limit)
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
 	}
 
 	public void setIsWord(boolean isWord) {

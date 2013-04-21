@@ -3,12 +3,9 @@ package gemcfadyen.drools_experimentation.templates;
 import static junit.framework.Assert.assertTrue;
 
 import java.io.InputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import junit.framework.Assert;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -20,17 +17,6 @@ import org.drools.template.ObjectDataCompiler;
 import org.junit.Test;
 
 public class BookTemplateTest {
-
-	private String expectedDrl = "package gemcfadyen.drools_experimentation.templates; "
-			+ "import gemcfadyen.drools_experimentation.templates.Book;"
-			+
-
-			"rule \"should print out restricted books\""
-			+ "when"
-			+ "	Book(title == Encyclopedia)"
-			+ "then "
-			+ "   System.out.println(\"The book with the title \" + Encyclopedia + \" is restricted\";"
-			+ "end";
 
 	@Test
 	public void shouldCreateDrlWhichPrintsOutRestrictedBookTitles() {

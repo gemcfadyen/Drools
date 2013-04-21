@@ -4,9 +4,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import gemcfadyen.drools_experimentation.DroolsWorkingMemoryHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.hamcrest.core.Is;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +36,15 @@ public class HelloWorldTest {
 		Message message = new Message();
 		message.setMessage("Hello World");
 		message.setStatus(Message.HELLO);
-		
+		List<String> globals = new ArrayList<String>();
+		statefulSession.setGlobal("list", globals);
 		statefulSession.insert(message);
 		statefulSession.fireAllRules();
 				
 		assertThat(message.getMessage(), is("Goodbye"));
 		assertThat(message.getStatus(), is(1));
+		assertThat(globals.size(), is(1));
+		assertThat(globals.get(0).toString(), is("hi global"));
 	}
 
 }

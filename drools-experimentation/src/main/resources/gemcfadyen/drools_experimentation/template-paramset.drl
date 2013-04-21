@@ -1,23 +1,25 @@
 template header
+
 isWord
 type
-
+limit
 
 package gemcfadyen.drools_experimentation
 import gemcfadyen.drools_experimentation.templates.ParamSet;
-
+global java.util.List list;
 
 template "categorises words"
 
-rule "should print out whether something is classified as a proper word @{row.rowNumber}"
-agenda-group "category"
-activation-group "category" 
+rule "should print out whether something is classified as a proper word @{row.rowNumber}" 
+
 when
-    param : ParamSet(isWord == @{isWord})
-   
+    p : ParamSet(isWord == @{isWord})
+
 then
     System.out.println( "@{type}  has evaluated to:  @{isWord}");
-   modify(param){setLimit(-1)};
+    p.setLimit(-1);
+    list.add("hi global added");   
+   
 end
 
 end template

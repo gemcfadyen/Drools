@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -24,14 +25,13 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.template.ObjectDataCompiler;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ParamSetTest {
 	private StatefulKnowledgeSession statefulSession;
 	private String drl;
 	private KnowledgeRuntimeLogger logger;
-
+    private Collection<ParamSet> paramSets;
 	
 
 	@Before
@@ -51,36 +51,41 @@ public class ParamSetTest {
 		statefulSession
 				.addEventListener(new DroolsWorkingMemoryEventListener());
 		logger = KnowledgeRuntimeLoggerFactory.newFileLogger(statefulSession,
-				"C:/Users/Georgina/Documents/GitHub/Drools/log/");
+				"C:/Users/Georgina/Documents/GitHub/Drools/log/template");
 
 	}
 
 	@After
 	public void tearDown() {
 		if (statefulSession != null) {
+			logger.close();
 			statefulSession.dispose();
 		}
 	}
 
 	@Test
 	public void shouldCheckTheRulesHaveBeenCreatedInDrl() {
-
 		assertTrue(drl.contains("blablabla  has evaluated to:  false"));
 		assertTrue(drl.contains("Sausage  has evaluated to:  true"));
 	}
 
-	@Ignore //it seems that template drl's successfully create the rules file, but dont get loaded into the session in this way as the rules dont seem to be fired
 	@Test
-	public void shouldUseTemplatedDrlToEvaluateInput() {
-		ParamSet param = new ParamSet("Sausage", 12, true);
+	public void shouldUseTemplatedDrlToEvaluateFactInsertedIntoSession() {
+		ParamSet param = new ParamSet("Sausage", 15, true);
 
-		statefulSession.insert(param);
+		List<String> globals = new ArrayList<String>();
+		statefulSession.setGlobal("list", globals);
+	    statefulSession.insert(param);
 		statefulSession.fireAllRules();
+				
 		assertThat(param.getLimit(), is(-1));
+		assertThat(globals.size(), is(1));
+		assertThat(globals.get(0), is("hi global added"));
+
 	}
 
 	private Collection<ParamSet> createLibraryOfWordsOfWhichTheRulesWillBeFormed() {
-		Collection<ParamSet> paramSets = new ArrayList<ParamSet>();
+		paramSets = new ArrayList<ParamSet>();
 		paramSets.add(new ParamSet("Sausage", 12, true));
 		paramSets.add(new ParamSet("blablabla", 1, false));
 		return paramSets;
@@ -95,9 +100,21 @@ public class ParamSetTest {
 		if (knowledgeBuilder.hasErrors()) {
 			System.out.println("Errors in drl " + knowledgeBuilder.getErrors());
 		}
-		knowledgeBase.addKnowledgePackages(knowledgeBase.getKnowledgePackages());
+		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
 
 		return knowledgeBase;
+		
+		
+		
+		//KnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
+		//KnowledgeBuilder kBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+		//Reader rdr = new StringReader( drl );
+		//kBuilder.add( ResourceFactory.newReaderResource( rdr ), ResourceType.DRL );
+		//if( kBuilder.hasErrors() ){
+		    // ...
+		   // throw new IllegalStateException( "DRL errors" );
+		//}
+		//kBase.addKnowledgePackages( kBuilder.getKnowledgePackages() );
 	}
 
 }
