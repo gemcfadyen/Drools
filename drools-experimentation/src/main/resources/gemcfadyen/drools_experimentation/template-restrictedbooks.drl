@@ -1,0 +1,18 @@
+template header
+
+title
+
+package gemcfadyen.drools_experimentation.templates;
+import gemcfadyen.drools_experimentation.templates.Book;
+
+template "books"
+
+rule "should print out restricted books"
+    
+when
+	book : Book(title == "@{title}")
+then
+   book.setIsRestricted(true);
+end
+
+end template

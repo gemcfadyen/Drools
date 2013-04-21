@@ -1,5 +1,6 @@
 package gemcfadyen.drools_experimentation;
 import gemcfadyen.drools_experimentation.helloworld.Message;
+global java.util.List list;
 
 rule "Hello World" dialect "mvel"
 when 
@@ -13,5 +14,6 @@ rule "Goodbye"
 when
 	Message (status == Message.GOODBYE, message : message)
 then
+list.add("hi");
 	System.out.println(message);
 end

@@ -1,0 +1,23 @@
+template header
+isWord
+type
+
+
+package gemcfadyen.drools_experimentation
+import gemcfadyen.drools_experimentation.templates.ParamSet;
+
+
+template "categorises words"
+
+rule "should print out whether something is classified as a proper word @{row.rowNumber}"
+agenda-group "category"
+activation-group "category" 
+when
+    param : ParamSet(isWord == @{isWord})
+   
+then
+    System.out.println( "@{type}  has evaluated to:  @{isWord}");
+   modify(param){setLimit(-1)};
+end
+
+end template
