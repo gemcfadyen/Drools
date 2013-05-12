@@ -1,0 +1,16 @@
+package gemcfadyen.drools_experimentation 
+import a.b.c.NonExistingClassName;
+
+rule "First Rule Name"
+when
+    //conditions
+then
+    //actions
+
+end
+
+rule "Second Rule Name" 
+when
+then
+end
+
