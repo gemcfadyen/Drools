@@ -3,11 +3,6 @@ package gemcfadyen.drools_experimentation.globals;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gemcfadyen.drools_experimentation.globals.GlobalResultObject;
-
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;

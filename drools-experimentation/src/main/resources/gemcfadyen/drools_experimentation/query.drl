@@ -1,0 +1,7 @@
+package gemcfadyen.drools_experimentation
+import gemcfadyen.drools_experimentation.queries.Followers;
+
+
+query "get all followers"
+    followers : Followers()
+end
