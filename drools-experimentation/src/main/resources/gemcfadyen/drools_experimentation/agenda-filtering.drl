@@ -1,0 +1,31 @@
+package gemcfadyen.drools_experimentation
+import gemcfadyen.drools_experimentation.agenda.Number;
+
+rule "positive test"
+when
+     Number(value > 0)
+then
+	System.out.println("Number is positive");
+end
+
+rule "another positive test"
+when
+     Number(value > 0)
+then
+	System.out.println("Number is positive");
+end
+
+rule "negative test"
+when
+	Number(value < 0)
+then
+	System.out.println("Number is negative");
+end
+
+rule "is zero"
+when
+	Number(value == 0)
+then
+	System.out.println("The number is zero");
+end
+

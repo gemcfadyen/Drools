@@ -16,6 +16,7 @@ import org.drools.builder.ResourceType;
 import org.drools.builder.ResultSeverity;
 import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +24,7 @@ import org.junit.Test;
 //Tried to override the duplicate rule property knowledgeBuilderConfiguration.setOption(KBuilderSeverityOption.get("drools.kbuilder.severity.duplicateRule", ResultSeverity.ERROR)); knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(knowledgeBuilderConfiguration); Resource drlFile = ResourceFactory.newClassPathResource("knowledge-builder-info-result.drl", this.getClass()); to do same for InFO but couldnt get it working.
 public class KnowledgeResultErrorTest {
 	private KnowledgeBuilder knowledgeBuilder;
+	
 	@Before
 	public void setupKnowledgeBuilder() {
 	    knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
@@ -31,7 +33,7 @@ public class KnowledgeResultErrorTest {
 	            "../knowledge-builder-error-result.drl", this.getClass());
 	    knowledgeBuilder.add(drlFile, ResourceType.DRL);
 	}
-
+	
 	@Test
 	public void shouldReturnAllErrorLevelMessagesFromDrlCompilation(){      
 	    KnowledgeBuilderResults allErrorLevelMessages = knowledgeBuilder.getResults(ResultSeverity.ERROR);

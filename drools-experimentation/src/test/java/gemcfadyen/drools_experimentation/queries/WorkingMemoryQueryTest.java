@@ -8,10 +8,12 @@ import gemcfadyen.drools_experimentation.DroolsWorkingMemoryHelper;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+//You can define queries in the drl that evaluate what facts for example are in the stateful session
 public class WorkingMemoryQueryTest {
 
 	private StatefulKnowledgeSession statefulSession;
@@ -24,6 +26,12 @@ public class WorkingMemoryQueryTest {
 		statefulSession.insert(followers);
 	}
 
+	@After
+	public void tearDown(){
+		if(statefulSession != null){
+			statefulSession.dispose();
+		}
+	}
 	@Test
 	public void shouldFindTheGetAllFollowersQueryOnTheDrlAndExecuteItReturningAListOfFollowers(){
 		QueryResults queryResults = statefulSession.getQueryResults("get all followers");

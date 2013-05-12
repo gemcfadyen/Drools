@@ -11,6 +11,7 @@ import java.util.EnumSet;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +32,13 @@ public class RangeTemplateTest {
 
 		knowledgeBase = expander.getKnowledgeBaseInitialisedWithTemplatedDrl(knowledgeBase, inputStream, paramtersForTemplate);
 		statefulKnowledgeSession = knowledgeBase.newStatefulKnowledgeSession();
+	}
+	
+	@After
+	public void tearDown(){
+		if(statefulKnowledgeSession != null){
+			statefulKnowledgeSession.dispose();
+		}
 	}
 
 	//various objects are passed into the stateful session. They are evaluated against the knowledge base which contains the logic in the generated templated drl.

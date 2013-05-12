@@ -10,6 +10,7 @@ import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +29,13 @@ public class GlobalTest {
 
 		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
 		workingMemory = knowledgeBase.newStatefulKnowledgeSession();
+	}
+	
+	@After
+	public void tearDown(){
+		if(workingMemory != null){
+			workingMemory.dispose();
+		}
 	}
 
 	@Test

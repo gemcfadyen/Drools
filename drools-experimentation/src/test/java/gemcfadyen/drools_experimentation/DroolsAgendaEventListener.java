@@ -1,6 +1,9 @@
 package gemcfadyen.drools_experimentation;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drools.event.rule.ActivationCancelledEvent;
 import org.drools.event.rule.ActivationCreatedEvent;
 import org.drools.event.rule.AfterActivationFiredEvent;
@@ -11,20 +14,33 @@ import org.drools.event.rule.BeforeActivationFiredEvent;
 import org.drools.event.rule.RuleFlowGroupActivatedEvent;
 import org.drools.event.rule.RuleFlowGroupDeactivatedEvent;
 /**
- * The event listener will keep track of the objects in the session
+ * The event listener will keep track of the agenda list in session
  * @author Georgina
  *
  */
 public class DroolsAgendaEventListener implements AgendaEventListener {
 
+	List<String> activationsCreated = new ArrayList<String>();
+	List<String> activationsCancelled = new ArrayList<String>();
+	
+	public List<String> getActivationsCreated(){
+		return activationsCreated;
+	}
+	
+	public List<String> getActivationsCancelled(){
+		return activationsCancelled;
+	}
+	
 	@Override
 	public void activationCreated(ActivationCreatedEvent event) {
+		activationsCreated.add(event.getActivation().getRule().getName());
 		System.out.println("Activation Created" + event.getActivation());
 		
 	}
 
 	@Override
 	public void activationCancelled(ActivationCancelledEvent event) {
+		activationsCancelled.add(event.getActivation().getRule().getName());
 		System.out.println("Activation cancelled" + event.getActivation());
 		
 	}
