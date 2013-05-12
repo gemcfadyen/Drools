@@ -1,0 +1,27 @@
+template header
+
+codes
+field
+lower
+upper
+
+
+package gemcfadyen.drools_experimental
+
+
+import gemcfadyen.drools_experimentation.templates.Item;
+import gemcfadyen.drools_experimentation.templates.ItemCode;
+global gemcfadyen.drools_experimentation.templates.Result returnedMessage;
+ 
+template "is in range"
+
+
+rule "is in range @{row.rowNumber}" 
+    when
+       Item($name : name,  $code : code @{codes},  $range : @{field} >= @{lower} && <= @{upper})
+    then
+       returnedMessage.setMessage("Item " + $name + " @{field} in range: " + $range + " code: " + $code);
+       System.out.println("Item " + $name + " @{field} in range: " + $range + " code: " + $code);
+end
+
+end template
