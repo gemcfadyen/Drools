@@ -33,7 +33,9 @@ public class AgendaFilteringTest {
 
 	@After
 	public void tearDown(){
+	  if(statefulSession !=null){
 		statefulSession.dispose();
+	  }
 	}
 	
 	//This test puts the 'positive test', 'another positive test' and 'is zero' rules on the activation list

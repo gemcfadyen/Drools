@@ -1,0 +1,75 @@
+package gemcfadyen.drools_experimentation.agenda
+
+import gemcfadyen.drools_experimentation.agenda.PriorityEnum;
+global gemcfadyen.drools_experimentation.agenda.Task task;
+
+rule "highest priority rule" 
+agenda-group "priority"
+ when 
+ Task(priority == PriorityEnum.HIGH)
+ then 
+ System.out.println("RULE: highest priority rule"); 
+ task.setManagedBy("Mr High Priority");
+end
+
+rule "middle priority rule" 
+agenda-group "priority" 
+when
+Task(priority == PriorityEnum.MIDDLE) 
+then
+ System.out.println("RULE: middle priority rule");
+ task.setManagedBy("Mr Middle Priority"); 
+ end
+
+rule "lowest priority rule" 
+agenda-group "priority" 
+when 
+Task(priority == Priority.LOW)
+ then 
+ System.out.println("RULE: low priority rule"); 
+ task.setManagedBy("Mr Low Priority"); 
+ end
+
+rule "deadline for low priority rules" 
+agenda-group "deadline" 
+when 
+Task(priority == Priority.LOW) 
+then 
+System.out.println("RULE: low deadline rule"); task.setDeadlineForEvaluation(4); 
+end
+
+rule "deadline for middle priority rules"
+ agenda-group "deadline"
+  when 
+  Task(priority == Priority.MIDDLE) 
+  then 
+  System.out.println("RULE: middle deadline rule"); 
+  task.setDeadlineForEvaluation(2); 
+  end
+
+rule "deadline for high priority rules"
+ agenda-group "deadline" 
+ when 
+ Task(priority == Priority.HIGH) 
+ then 
+ System.out.println("RULE: high deadline rule"); 
+ task.setDeadlineForEvaluation(1); 
+ end
+
+rule "get tasks for Mr Low Priority" 
+agenda-group "admin" 
+when 
+Task(priority == Priority.LOW) 
+then 
+System.out.println("this is a task for Mr Low Priority"); 
+task.setManagerChecked(1); 
+end
+
+rule "get number of evaluation days required for Low Priority" 
+agenda-group "admin" 
+when 
+ lowPriorityTask : Task(priority == Priority.LOW)
+then 
+ task.setDeadlineChecked(1); 
+ System.out.println("the number of days for evaluation is" + lowPriorityTask.getDeadlineForEvaluation() );
+end

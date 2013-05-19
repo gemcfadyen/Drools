@@ -1,0 +1,20 @@
+package gemcfadyen.drools_experimentation 
+import gemcfadyen.drools_experimentation.agenda.PriorityEnum;
+
+global gemcfadyen.drools_experimentation.agenda.Task task;
+
+rule "get tasks for Mr Low Priority" 
+agenda-group "admin" 
+activation-group "admin-activation"
+ when Task(priority == Priority.LOW) 
+ then System.out.println("this is a task for Mr Low Priority"); 
+ task.setManagerChecked(1); 
+ end
+
+rule "get number of evaluation days required for Low Priority" 
+agenda-group "admin" 
+activation-group "admin-activation" 
+when lowPriorityTask : Task(priority == Priority.LOW) 
+then task.setDeadlineChecked(1); 
+System.out.println("the number of days for evaluation is" + lowPriorityTask.getDeadlineForEvaluation() ); 
+end
