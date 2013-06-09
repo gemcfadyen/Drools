@@ -1,0 +1,42 @@
+package gemcfadyen.drools_experimentation.helloworld import gemcfadyen.drools_experimentation.helloworld.Person;
+
+rule "increments the persons age and checks if they are 10"
+when
+    Person(incrementAndGetAge() == "10")  //This uses coercion as the field is an integer, it is casting the string "10" implicitly to an int
+then
+    System.out.println("Added age");
+
+ end
+
+rule "checks the persons first name"
+when
+    Person(name == "Jenny")
+then
+    System.out.println("Hi Jenny");
+
+ end
+
+rule "do some calculation on age"
+when
+    Person($age : age * 2 < 100)
+then
+    System.out.println("age is: " + $age);
+
+ end
+
+rule "do some calculation on age using comma seperated AND"
+when
+    Person(age * 2 < 3, $age : age)
+then
+    System.out.println("age is: " + $age);
+
+ end
+
+rule "does the name sound like penny"
+when
+    Person($name : name)
+    Person(name soundslike 'Jenny')
+then
+    System.out.println("name: " + $name + " sounds like Jenny");
+
+ end
