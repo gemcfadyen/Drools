@@ -3,6 +3,8 @@ package gemcfadyen.drools_experimentation.globals;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
+
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -22,18 +24,20 @@ public class GlobalTest {
 	public void setup() {
 		KnowledgeBuilder knowledgeBuilder = KnowledgeBuilderFactory
 				.newKnowledgeBuilder();
-		ClassPathResource resource = new ClassPathResource("../globals.drl",	this.getClass());
+		ClassPathResource resource = new ClassPathResource("../globals.drl",
+				this.getClass());
 		knowledgeBuilder.add(resource, ResourceType.DRL);
 
 		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
 
-		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
+		knowledgeBase.addKnowledgePackages(knowledgeBuilder
+				.getKnowledgePackages());
 		workingMemory = knowledgeBase.newStatefulKnowledgeSession();
 	}
-	
+
 	@After
-	public void tearDown(){
-		if(workingMemory != null){
+	public void tearDown() {
+		if (workingMemory != null) {
 			workingMemory.dispose();
 		}
 	}
@@ -41,10 +45,13 @@ public class GlobalTest {
 	@Test
 	public void shouldSuccessfullyChangeAGlobalsValueInTheDrl() {
 		GlobalResultObject result = new GlobalResultObject();
+		ArrayList globalList = new ArrayList();
 		workingMemory.setGlobal("result", result);
+		workingMemory.setGlobal("list", globalList);
 		workingMemory.fireAllRules();
 
 		assertThat(result.getMessage(), is("Global message has been set"));
+		assertThat(globalList.size(), is(0));
 
 	}
 
@@ -53,11 +60,15 @@ public class GlobalTest {
 		GlobalResultObject result = new GlobalResultObject();
 		result.setIsSet(10);
 
+		ArrayList<GlobalResultObject> globalList = new ArrayList<GlobalResultObject>();
+
 		workingMemory.setGlobal("result", result);
+		workingMemory.setGlobal("list", globalList);
 		workingMemory.insert(result);
 		workingMemory.fireAllRules();
 
 		assertThat(result.getMessage(), is("Global has a flag set so no message is returned"));
+		assertThat(globalList.size(), is(1));
 	}
 
 }

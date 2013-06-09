@@ -1,5 +1,5 @@
 package gemcfadyen.drools_experimentation
-
+global java.util.List list;
 global gemcfadyen.drools_experimentation.globals.GlobalResultObject result;  
 //you dont need to import the global class explicitly even if you are using it on RHS and LHS
 
@@ -12,7 +12,8 @@ then
 
 rule "should set the message indicating a flag has been set on the object inserted in"
 when
-    GlobalResultObject(isSet == 10)
+    globalObjectBeingReasonedOver : GlobalResultObject(isSet == 10)
 then
     result.setMessage("Global has a flag set so no message is returned");
+    list.add(globalObjectBeingReasonedOver);
 end
