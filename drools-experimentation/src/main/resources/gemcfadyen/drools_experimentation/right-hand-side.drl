@@ -1,0 +1,38 @@
+package gemcfadyen.drools_experimentation.helloworld 
+import gemcfadyen.drools_experimentation.helloworld.Person;
+
+global java.util.List people;
+
+query "people under the age of 5" 
+  p : Person (age < 5) 
+end
+
+rule "sets the name of a ten year old to Baby" 
+when  
+  p : Person(age == "10") //This uses coercion as the field is an integer, it is casting the string "10" implicitly to an int 
+then 
+   p.setAge(11); //using this to break the loop otherwise we just infinitley loop around 
+   modify (p){setName("Baby")};  // Here we are using modify so the rules should be re-evaluated and execute the next rule too
+end
+
+rule "If persons name is baby add them to the list" 
+when 
+  p : Person(name == "Baby") 
+then 
+  people.add(p); 
+end
+
+rule "sets the name of a sixty year old to pensioner" 
+when 
+  p : Person(age == 65) 
+then 
+  p.setName("Older Generation"); //here we use the java setter, so session should not be re-evaluated 
+end
+
+rule "If persons name is Older Generation add them to the list" 
+//In the test this rule is not invoked 
+when 
+  p : Person(name == "Older Generation") 
+then 
+  people.add(p); 
+end
