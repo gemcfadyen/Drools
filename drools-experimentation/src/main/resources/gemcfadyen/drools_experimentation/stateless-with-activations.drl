@@ -1,0 +1,37 @@
+import gemcfadyen.drools_experimentation.stateless.BirthdayPerson; 
+global gemcfadyen.drools_experimentation.stateless.BirthdayResult birthdayMessage;
+
+rule "ordering of rules" 
+salience 2
+when 
+then 
+  drools.setFocus("jo-birthday"); 
+  drools.setFocus("cha-birthday"); 
+end
+
+rule "should congratulate jojo if it is her birthday" 
+activation-group "birthday" 
+salience 1 
+when 
+  BirthdayPerson(birthdate == '29/05/82') 
+then 
+  birthdayMessage.setBirthdayMessage("Happy Birthday Jo-Jo");
+end
+
+rule "should congratulate chacha if it is her birthday" 
+activation-group "cha-birthday"
+salience 1 
+when 
+  BirthdayPerson(birthdate == '27/12/76') 
+then 
+  birthdayMessage.setBirthdayMessage("Happy Birthday ChaCha");
+end
+
+rule "should comiserate if no birthday is matched" 
+//activation-group "not-birthday" 
+when 
+   BirthdayPerson($name : name, birthdate in ('25/10/48', '11/12/50')) 
+then
+   birthdayMessage.setBirthdayMessage("Sorry no birthday greeting for you " + $name);
+
+ end

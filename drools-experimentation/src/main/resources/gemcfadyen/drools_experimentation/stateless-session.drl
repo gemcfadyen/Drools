@@ -1,0 +1,13 @@
+package gemcfadyen.drools_experminetation
+
+import gemcfadyen.drools_experimentation.stateless.BirthdayPerson; 
+global gemcfadyen.drools_experimentation.stateless.BirthdayResult birthdayMessage;
+
+rule "should congratulate jojo if it is her birthday" 
+activation-group "birthday" 
+salience 1 
+when 
+  BirthdayPerson(birthdate == '29/05/82') 
+then 
+  birthdayMessage.setBirthdayMessage("Happy Birthday Jo-Jo");
+end
