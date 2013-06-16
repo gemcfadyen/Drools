@@ -1,0 +1,16 @@
+package gemcfadyen.drools_experimentation.dsl
+
+import gemcfadyen.drools_experimentation.dsl.Cheese;
+
+#expander cheese.dsl
+
+rule "fresh stinky stilton" 
+when 
+    There is a Cheese with 
+    - age is less than 5 
+    - type is 'Stilton' 
+    - country equal to 'England' 
+then 
+   LOG 'Fresh Stilton'; 
+   Label Cheese 
+end

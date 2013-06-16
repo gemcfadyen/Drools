@@ -19,7 +19,7 @@ import org.junit.Test;
 
 public class DomainSpecificLanguageTest {
 	// The DSL is like a translator - translates sentences to rules 
-	//The DSLR  contains the sentences
+	// The DSLR  contains the sentences
 
 	// Note: The translation process happens in memory and no .drl file is
 	// physically stored
