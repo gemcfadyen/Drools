@@ -52,7 +52,7 @@ Its easy to read the logic, the drl files act as documentation. Rather than comp
 
 Agenda and activation groups provide a nice way to order rules without relying on salience which could be difficult to maintain over time.
 
-Some of the features, particularly those available within Stateful Sessions are very powerful (sauch as modifying the working memory during runtime, obtaining facts from the session and manipulating them.
+Some of the features, particularly those available within Stateful Sessions are very powerful (such as modifying the working memory during runtime, obtaining facts from the session and manipulating them.
 I found it difficult to think of real life usecases for the templated drools files, although I'm sure there are some good ones out there.
 
-In my opinion if you have a problem or area in your code which a rules engine could solve then drools should definatly be considered.
+In my opinion if you have a problem or area in your code which a rules engine could solve then drools should definitely be considered.
