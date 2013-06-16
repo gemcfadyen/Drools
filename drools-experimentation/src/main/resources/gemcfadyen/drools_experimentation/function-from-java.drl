@@ -1,0 +1,11 @@
+package gemcfadyen.drools_experimentation 
+global gemcfadyen.drools_experimentation.functions.FunctionResult message;
+
+import function gemcfadyen.drools_experimentation.functions.FunctionDefinedInJava.getCheeryMessage;
+
+//You dont need to use eval() 
+rule "Cheery message using a function defined in java helper class" 
+when 
+then 
+  message.setMessage(getCheeryMessage("Georgina")); 
+end

@@ -1,0 +1,29 @@
+package gemcfadyen.drools_experimentation.declare
+
+import java.util.Date;
+global java.util.List results;
+
+
+declare Person
+       name : String
+       dob : Date
+       age : int
+end
+
+
+rule "should instansiate a person in drools"
+when
+then
+    Person youngLassie = new Person();
+    youngLassie.setAge(21);
+    youngLassie.setName("Amelia-Jane");
+end
+
+
+rule "should Give out pension"
+    when
+       georgina : Person(name == "Georgina")
+    then
+        results.add("Georgina was found");
+        georgina.setAge(18);
+end

@@ -1,0 +1,32 @@
+package gemcfadyen.drools_experimentation 
+global gemcfadyen.drools_experimentation.functions.FunctionResult message;
+
+function String hello(String name){ 
+  return "Hello " + name; 
+}
+
+function boolean isNameJoJo(String name){ 
+  if(name == "Jo-Jo") 
+    return true; 
+  else 
+    return false; 
+}
+
+//because the hello function is not returning a boolean, we do not need to use the eval(hello("Georgina")); //Also eval() is only used with boolean functions rule "Hello World Using A function defined in the DRL" when then message.setMessage(hello("Georgina")); end
+//If you use eval with a non-boolean function, you get the error 
+//Errors found in knowledge builder Unable to resolve ObjectType 'isNameJoJo' : [Rule name='Call function directly'] 
+rule "Call function directly" 
+when 
+  eval(isNameJoJo("Jo-Jo")) 
+then 
+ System.out.println("isNameJoJo is true");
+ message.setMessage("isNameJoJo is true");
+end
+
+rule "Hello World Using A function defined in the DRL"
+    when
+    then
+     message.setMessage(hello("Georgina"));
+
+end
+

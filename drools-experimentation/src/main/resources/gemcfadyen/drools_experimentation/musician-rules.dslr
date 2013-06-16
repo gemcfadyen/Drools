@@ -1,0 +1,32 @@
+package gemcfadyen.drools_experimentation.dsl
+import gemcfadyen.drools_experimentation.dsl.Musician;
+
+global java.util.List availableMusicians;
+
+
+//The expander is not compulsary
+//It informs Drools how to translate sentences in this file into valid rules.
+//Drools reads the musician-rules.dslr file and tries to translate each line by applying all mappings from the musician-rules.dsl
+//file (it does it in a single pass process, line-by-line from top to bottom).
+
+expander musician-rules.dsl
+
+rule "Violin player" 
+when 
+There is a musician who plays the "violin" 
+And 
+Musician is at least 18 years old and lives in "Scotland" 
+then 
+  Log "Violin player available in Scotland" 
+  set player to available 
+end
+
+rule "Trombone" 
+when 
+  There is a musician who plays the "Trombone" 
+  And 
+  Musician is at least 20 years old and lives in "York" 
+then 
+  Log "Trombone player available in York" 
+  set player to available 
+end

@@ -1,0 +1,62 @@
+package gemcfadyen.drools_experimentation.declare
+
+import java.util.Date; 
+import java.util.Calendar;
+
+global java.util.List pensionPayements;
+
+declare IsPensionAge 
+end
+
+declare Address 
+  number : int 
+  streetName : String 
+  city : String 
+end
+
+declare Person
+  name : String
+  dob : Date // have imported java.util.Date for this field 
+  age : int 
+  address : Address 
+ end
+
+rule "should create a pensioner"
+
+when 
+then 
+    Person pensioner = new Person(); 
+    pensioner.setAge(60); 
+    pensioner.setName("Bertie");
+    Calendar pensionersBirthdate = Calendar.getInstance();
+    pensionersBirthdate.set(1950, 1, 1);
+    pensioner.setDob(pensionersBirthdate.getTime());
+
+    Address address = new Address();
+    address.setNumber(1);
+    address.setStreetName("Old Folks Home");
+    address.setCity("WrinkleLand");
+
+    pensioner.setAddress(address);
+
+    System.out.println("Pensionsers bday is: " + pensioner.getDob());
+
+    insert(pensioner);
+ end
+
+rule "should check if Person is of Pension age and insert a pension object into working memory" 
+when 
+    dateForPension : Date() and 
+    Person(pensionersBirthday : dob before dateForPension.getTime()) 
+then 
+    System.out.println("date for pension " + dateForPension); 
+    insert(new IsPensionAge()); 
+end
+
+rule "should Give out pension" 
+when 
+    Person(pensionersName : name) IsPensionAge() 
+then 
+    System.out.println("Pension given");
+    pensionPayements.add("Pension given to " + pensionersName);
+end 
